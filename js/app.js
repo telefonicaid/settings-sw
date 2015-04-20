@@ -16,7 +16,7 @@ debug('APP carga app.js');
 
   var register = function(evt) {
     debug('APP executing register...');
-    navigator.serviceWorker.register('/settingsSW/sw.js', {scope: './'}
+    navigator.serviceWorker.register('/settings-sw/sw.js', {scope: './'}
     ).then(function(reg) {
       debug('APP Registration succeeded. Scope: ' + reg.scope);
       if (reg.installing) {

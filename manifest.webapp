@@ -1,15 +1,15 @@
 {
-  "appcache_path": "/settingsSW/manifest.appcache",
+  "appcache_path": "/settings-sw/manifest.appcache",
   "version": "0.1.0",
   "name": "Settings - SW - SHIM - SERVER",
   "description": "Service worker - shim testing",
   "type": "trusted",
-  "launch_path": "/settingsSW/index.html",
+  "launch_path": "/settings-sw/index.html",
   "icons": {
-    "16": "/settingsSW/style/icons/icon.png",
-    "48": "/settingsSW/style/icons/icon.png",
-    "60": "/settingsSW/style/icons/icon.png",
-    "128": "/settingsSW/style/icons/icon.png"
+    "16": "/settings-sw/style/icons/icon.png",
+    "48": "/settings-sw/style/icons/icon.png",
+    "60": "/settings-sw/style/icons/icon.png",
+    "128": "/settings-sw/style/icons/icon.png"
   },
   "connections": {
     "https://testServiceConnect.hostedweb.tid.es/services": {

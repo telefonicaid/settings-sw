@@ -12,7 +12,7 @@ function debug(str) {
 }
 
 // ADDED FOR SHIM: Import the shim script
-this.importScripts("/settingsSW/shim/navigator_connect_shim_sw.js");
+this.importScripts("/settings-sw/shim/navigator_connect_shim_sw.js");
 // END ADDED FOR SHIM
 
 debug('SW importScripts executed (hopefully)!');
