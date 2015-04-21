@@ -64,6 +64,8 @@ debug('APP carga app.js');
     for (var kk in evt) {
       debug('APP onMesssage -->:' + kk + ':' + JSON.stringify(evt[kk]));
     }
+
+    SettingsService.handleRequest(msg);
   });
 
   if ('serviceWorker' in navigator) {

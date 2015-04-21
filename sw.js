@@ -29,6 +29,10 @@ this.addEventListener('fetch', function(evt) {
   debug('SW fetch event');
 });
 
+this.mozSettings = window.navigator.mozSettings;
+this._observers = [];
+this.handleSettingChange = this.onSettingChange.bind(this);
+
 this.onconnect = function(msg) {
   debug("SW onconnect event");
   for(var i in msg){
@@ -40,8 +44,25 @@ this.onconnect = function(msg) {
   // so we can do:
   msg.acceptConnection(true);
   msg.source.onmessage = function(aMsg) {
-    // Use message
+    var msg = aMsg.data;
+    if (!msg.type || !msg.name) {
+      debug('Message received bad formed');
+      return;
+    }
+
+    // We need to delegate this work to the app because SW does not have access
+    // to the device APIs
+    self.clients.matchAll().then(res => {
+      if (!res.length) {
+        debug('SW SETTING Error: no clients are currently controlled.');
+      } else {
+        debug('SW SETTING Sending...');
+        res[0].postMessage(msg);
+      }
+    });
   };
+
+  this.msgConnectionChannel = msg.source;
 };
 
 this.addEventListener('message', function(evt) {
@@ -59,6 +80,7 @@ this.addEventListener('message', function(evt) {
 
   // Your code here
   debug("SW We got a message for us!");
+  this.msgConnectionChannel.postMessage(evt.data);
 });
 
 

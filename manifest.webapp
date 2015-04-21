@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "name": "Settings - SW - SHIM - SERVER",
   "description": "Service worker - shim testing",
-  "type": "trusted",
+  "type": "certified",
   "launch_path": "/settings-sw/index.html",
   "icons": {
     "16": "/settings-sw/style/icons/icon.png",
@@ -12,7 +12,7 @@
     "128": "/settings-sw/style/icons/icon.png"
   },
   "connections": {
-    "https://testServiceConnect.hostedweb.tid.es/services": {
+    "http://telefonicaid.github.io/settings-sw": {
       "description": "Test SHIM IAC",
       "rules": {}
     }
