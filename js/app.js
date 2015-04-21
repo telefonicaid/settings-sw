@@ -47,7 +47,7 @@ debug('APP carga app.js');
     });
   };
 
-  window.addEventListener('message', function(evt) {
+  navigator.serviceWorker.addEventListener('message', function(evt) {
     // ADDED FOR SHIM
     // This is shim specific (and wouldn't be needed if navigator.connect were
     // native, or MessageChannel worked!). If we want to process messages that

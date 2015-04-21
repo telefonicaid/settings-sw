@@ -9,10 +9,7 @@ debug('SHIM SVR !! Loaded navigator_connect_shim_svr.js');
 (function(exports) {
 
   if (exports.NCShim) {
-    debug('window.NCShim ya existe');
     return;
-  } else {
-    debug('window.NCShim NOOO existe');
   }
 
   var cltCount = 0;
@@ -55,7 +52,9 @@ debug('SHIM SVR !! Loaded navigator_connect_shim_svr.js');
 
     debug('SHIM SVR registering a apps handlers');
     navigator.serviceWorker.addEventListener('message', evt => {
+      debug(' SHIM SVR  msg received:' + JSON.stringify(evt.data));
       if (!isInternalMessage(evt)) {
+        debug(' SHIM SVR it is not internal');
         return;
       }
       console.log('*** APP***  recibe un msg!!');
@@ -225,9 +224,7 @@ debug('SHIM SVR !! Loaded navigator_connect_shim_svr.js');
     };
   })();
 
-  debug('SHIM SVR antes registrar  handlers');
   navigator.serviceWorker.ready.then(registerHandlers);
-  debug('SHIM SVR despues registrar  handlers');
 
   // This whole object should not be needed, except for tests, if
   // MessageChannel did work.
