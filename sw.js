@@ -29,10 +29,6 @@ this.addEventListener('fetch', function(evt) {
   debug('SW fetch event');
 });
 
-this.mozSettings = window.navigator.mozSettings;
-this._observers = [];
-this.handleSettingChange = this.onSettingChange.bind(this);
-
 this.onconnect = function(msg) {
   debug("SW onconnect event");
   for(var i in msg){
