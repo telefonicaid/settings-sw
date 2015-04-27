@@ -40,6 +40,7 @@ this.onconnect = function(msg) {
   // so we can do:
   msg.acceptConnection(true);
   msg.source.onmessage = function(aMsg) {
+    debug(JSON.stringify(aMsg));
     var msg = aMsg.data;
     if (!msg.type || !msg.name) {
       debug('Message received bad formed');
