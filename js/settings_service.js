@@ -71,6 +71,7 @@
     },
 
     observe: function ss_observe(data) {
+      console.info('MANU - ' + JSON.stringify(data));
       if (!this.mozSettings) {
         window.setTimeout(function() {
           this.handleSettingChange(data.defaultValue);
@@ -83,6 +84,7 @@
       request.onsuccess = function() {
         var value = typeof(request.result[data.name]) != 'undefined' ?
           request.result[data.name] : data.defaultValue;
+console.info('MANU - ' + value);
         this.handleSettingChange(data.name, value);
       }.bind(this);
 
