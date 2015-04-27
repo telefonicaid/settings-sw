@@ -1,5 +1,4 @@
 {
-  "appcache_path": "/settings-sw/manifest.appcache",
   "version": "0.1.0",
   "name": "Settings - SW - SHIM - SERVER",
   "description": "Service worker - shim testing",
