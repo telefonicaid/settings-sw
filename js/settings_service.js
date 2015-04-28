@@ -23,7 +23,7 @@
       request.onsuccess = function() {
         console.info('Get setting value success: ' +
           request.result[msg.data.name]);
-        msg.channel.postMessage({
+        this.respondRequest(msg, {
           type: 'get',
           name: msg.data.name,
           value: request.result[msg.data.name]
