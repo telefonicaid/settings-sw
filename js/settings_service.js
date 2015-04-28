@@ -11,114 +11,112 @@
     _observers: [],
 
     handleRequest: function ss_handleRequest(msg) {
-      if (this[msg.type]) {
-        this[msg.type](msg);
+      if (this[msg.data.type]) {
+        this[msg.data.type](msg);
       }
     },
 
-    get: function ss_get(data) {
+    get: function ss_get(msg) {
       var lock = this.mozSettings.createLock();
-      var request = lock.get(data.name);
+      var request = lock.get(msg.data.name);
 
       request.onsuccess = function() {
         window.DUMP('Get setting value success: ' +
-          request.result[data.name]);
-        this.respondRequest({
+          request.result[msg.data.name]);
+        this.respondRequest(msg, {
           type: 'get',
-          name: data.name,
-          value: request.result[data.name]
+          name: msg.data.name,
+          value: request.result[msg.data.name]
         });
       }.bind(this);
 
       request.onerror = function() {
         window.DUMP('Something went wrong');
-        this.respondRequest({
+        this.respondRequest(msg, {
           type: 'get',
-          name: data.name,
+          name: msg.data.name,
           value: false
         });
       }.bind(this);
     },
 
-    set: function ss_set(data) {
-      if (typeof data.value === 'undefined') {
+    set: function ss_set(msg) {
+      if (typeof msg.data.value === 'undefined') {
         window.DUMP('Message received bad formed. Missing parameter: value');
         return;
       }
 
       var lock = this.mozSettings.createLock();
       var cset = {};
-      cset[data.name] = data.value;
+      cset[msg.data.name] = msg.data.value;
       var request = lock.set(cset);
 
       request.onsuccess = function() {
         window.DUMP('Update setting value success');
-        this.respondRequest({
+        this.respondRequest(msg, {
           type: 'set',
-          name: data.name,
+          name: msg.data.name,
           result: true
         });
       }.bind(this);
 
       request.onerror = function() {
         window.DUMP('Something went wrong');
-        this.respondRequest({
+        this.respondRequest(msg, {
           type: 'set',
-          name: data.name,
+          name: msg.data.name,
           result: false
         });
       }.bind(this);
     },
 
-    observe: function ss_observe(data) {
-      console.info('MANU - ' + JSON.stringify(data));
+    observe: function ss_observe(msg) {
+      console.info('MANU - ' + JSON.stringify(msg));
       if (!this.mozSettings) {
         window.setTimeout(function() {
-          this.handleSettingChange(data.defaultValue);
+          this.handleSettingChange(msg.data.defaultValue);
         });
         return;
       }
 
-      var request = this.mozSettings.createLock().get(data.name);
+      var request = this.mozSettings.createLock().get(msg.data.name);
 
       request.onsuccess = function() {
-        var value = typeof(request.result[data.name]) != 'undefined' ?
-          request.result[data.name] : data.defaultValue;
+        var value = typeof(request.result[msg.data.name]) != 'undefined' ?
+          request.result[msg.data.name] : msg.data.defaultValue;
 console.info('MANU - ' + value);
-        this.handleSettingChange(data.name, value);
+        this.handleSettingChange(msg.data.name, value);
       }.bind(this);
 
       var settingChanged = function settingChanged(evt) {
-        this.handleSettingChange(data.name, evt.settingValue);
+        this.handleSettingChange(msg, evt.settingValue);
       }.bind(this);
-      this.mozSettings.addObserver(data.name, settingChanged);
+      this.mozSettings.addObserver(msg.data.name, settingChanged);
       this._observers.push({
-        name: data.settingKey,
+        name: msg.data.settingKey,
         observer: settingChanged
       });
     },
 
-    unobserve: function ss_unobserve(data) {
+    unobserve: function ss_unobserve(msg) {
       this._observers.forEach(function(value, index) {
-        if (value.name === data.name) {
+        if (value.name === msg.data.name) {
           this.mozSettings.removeObserver(value.name, value.observer);
           this._observers.splice(index, 1);
         }
       }.bind(this));
     },
 
-    onSettingChange: function ss_onSettingChange(settingKey, settingValue) {
-      this.respondRequest({
+    onSettingChange: function ss_onSettingChange(msg, settingValue) {
+      this.respondRequest(msg, {
         type: 'observe',
-        name: settingKey,
+        name: msg.data.name,
         value: settingValue
       });
     },
 
-    respondRequest: function ss_respondRequest(response) {
-      navigator.serviceWorker.ready.then(sw => {
-        sw.active && sw.active.postMessage(response);
-      });
+    respondRequest: function ss_respondRequest(msg, response) {
+      msg.channel.postMessage(response);
     }
   };
 
