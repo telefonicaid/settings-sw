@@ -21,7 +21,7 @@
       var request = lock.get(msg.data.name);
 
       request.onsuccess = function() {
-        window.DUMP('Get setting value success: ' +
+        console.info('Get setting value success: ' +
           request.result[msg.data.name]);
         this.respondRequest(msg, {
           type: 'get',
@@ -31,7 +31,7 @@
       }.bind(this);
 
       request.onerror = function() {
-        window.DUMP('Something went wrong');
+        console.info('Something went wrong');
         this.respondRequest(msg, {
           type: 'get',
           name: msg.data.name,
@@ -42,7 +42,7 @@
 
     set: function ss_set(msg) {
       if (typeof msg.data.value === 'undefined') {
-        window.DUMP('Message received bad formed. Missing parameter: value');
+        console.info('Message received bad formed. Missing parameter: value');
         return;
       }
 
@@ -52,7 +52,7 @@
       var request = lock.set(cset);
 
       request.onsuccess = function() {
-        window.DUMP('Update setting value success');
+        console.info('Update setting value success');
         this.respondRequest(msg, {
           type: 'set',
           name: msg.data.name,
@@ -61,7 +61,7 @@
       }.bind(this);
 
       request.onerror = function() {
-        window.DUMP('Something went wrong');
+        console.info('Something went wrong');
         this.respondRequest(msg, {
           type: 'set',
           name: msg.data.name,
